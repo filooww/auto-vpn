@@ -50,7 +50,7 @@ cd vpn-auto
 В конфиг Hammerspoon (В меню-баре сверху ярлык молотка - Open Config) вставьте код, который будет запускать скрипт из склонированной папки:
 
     function runVPN()
-        local scriptPath = os.getenv("HOME") .. "/Desktop/vpn_automation/vpn_auto.scpt"
+        local scriptPath = os.getenv("HOME") .. "/Desktop/vpn_auto/vpn_auto.scpt"
 
         hs.notify.new({title="VPN Automation", informativeText="Система проснулась. Подключаю..."}):send()
         hs.execute("osascript " .. scriptPath)
