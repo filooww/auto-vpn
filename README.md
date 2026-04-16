@@ -44,7 +44,7 @@ cd ~/Desktop
 
 ### Clone the repository
 ```bash
-git clone https://github.com/fastonyou/auto-vpn.git vpn-auto
+git clone https://github.com/filooww/auto-vpn.git vpn-auto
 ```
 
 ### Enter the folder
