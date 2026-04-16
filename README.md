@@ -1,73 +1,82 @@
-Автоматизация OpenVPN Connect 2FA для macOS
+OpenVPN Connect 2FA Automation for macOS
 
-Этот проект позволяет полностью автоматизировать подключение к VPN при открытии крышки ноутбука.
-🛠 Шаг 1: Установка инструментов (через Терминал)
+This project allows you to fully automate VPN connection each time you open your laptop lid.
 
-Откройте Терминал и выполните установку менеджера пакетов и необходимых утилит:
+🛠 Step 1: Installing tools (via Terminal)
 
+Open the Terminal and install the package manager and required utilities:
 
--- Установка Homebrew
+— Install Homebrew
 
-    /bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
+bash
+/bin/bash -c "$(curl -fsSL https://raw.githubusercontent.com/Homebrew/install/HEAD/install.sh)"
 
--- Установка инструментов для 2FA и сканирования QR
+— Install utilities for 2FA and QR code scanning
 
-    brew install oath-toolkit zbar git
+bash
+brew install oath-toolkit zbar git
 
-🔑 Шаг 2: Извлечение секрета из QR-кода
+🔑 Step 2: Extracting the secret from the QR code
 
-Возьмите QRcode, который вам скидывали в тг при настройке впн.
+Use the QR code that was sent to you (e.g., in Telegram) when setting up the VPN.
 
-    zbarimg ~/ВАШ ПУТЬ/qr.png
+bash
+zbarimg ~/YOUR_PATH/qr.png
 
-Скопируйте значение после secret= (например: 6APTQGIS...). Оно понадобится для настройки скрипта.
+Copy the value that appears after secret= (for example: 6APTQGIS...). You’ll need it later when setting up the script.
 
-📂 Шаг 3: Клонирование репозитория и настройка
+📂 Step 3: Cloning the repository and configuration
 
-Теперь просто скачайте репозиторий:
+Now let’s download the repository:
 
--- Переходим на рабочий стол
+— Go to Desktop
 
-    cd ~/Desktop
+bash
+cd ~/Desktop
 
--- Клонируем  репозиторий
+— Clone the repository
 
-    git clone https://github.com/fastonyou/auto-vpn.git vpn-auto
+bash
+git clone https://github.com/fastonyou/auto-vpn.git vpn-auto
 
--- Переходим в папку
+— Enter the folder
+
+bash
 cd vpn-auto
 
-Настройка ключа:
+Configure your secret:
 
-Откройте файл vpn_auto.scpt в Редакторе скриптов и замените ВАШ_СЕКРЕТ на тот, что вы получили в Шаге 2. Сохраните изменения.
+Open the file vpn_auto.scpt in Script Editor and replace YOUR_SECRET with the value you obtained in Step 2. Save the changes.
 
-⏳ Шаг 4: Настройка Hammerspoon
+⏳ Step 4: Setting up Hammerspoon
 
-Установите Hammerspoon.
+Install Hammerspoon:
 
-    brew install --cask hammerspoon
+bash
+brew install --cask hammerspoon
 
-В конфиг Hammerspoon (В меню-баре сверху ярлык молотка - Open Config) вставьте код, который будет запускать скрипт из склонированной папки:
+Open the Hammerspoon config (click the hammer icon in your menu bar → Open Config), and insert the following code to run the script from your cloned folder:
 
-    function runVPN()
-        local scriptPath = os.getenv("HOME") .. "/Desktop/vpn_auto/vpn_auto.scpt"
+lua
+function runVPN()
+    local scriptPath = os.getenv("HOME") .. "/Desktop/vpn_auto/vpn_auto.scpt"
 
-        hs.notify.new({title="VPN Automation", informativeText="Система проснулась. Подключаю..."}):send()
-        hs.execute("osascript " .. scriptPath)
+    hs.notify.new({title="VPN Automation", informativeText="System woke up. Connecting..."}):send()
+    hs.execute("osascript " .. scriptPath)
+end
+
+watcher = hs.caffeinate.watcher.new(function(event)
+    if (event == hs.caffeinate.watcher.systemDidWake) then
+        hs.timer.doAfter(0.5, runVPN)
     end
+end)
 
-    watcher = hs.caffeinate.watcher.new(function(event)
-        if (event == hs.caffeinate.watcher.systemDidWake) then
-            hs.timer.doAfter(0.5, runVPN)
-        end
-    end)
+watcher:start()
 
-    watcher:start()
+Click Save and then Reload Config in the Hammerspoon menu.
+You can change the delay value in the script if needed.
 
-Нажмите Save и Reload Config в меню Hammerspoon.
-Можно менять значение задежрки в скрипте
+🛡 Step 5: Granting permissions
 
-🛡 Шаг 5: Права доступа
-
-Обязательно дайте права Hammerspoon в системе:
-Системные настройки -> Конфиденциальность и безопасность -> Универсальный доступ.
+Make sure to grant Hammerspoon the necessary accessibility permissions:
+System Settings → Privacy & Security → Accessibility
