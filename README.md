@@ -1,6 +1,6 @@
 <div align="center">
 
-![Auto VPN](https://raw.githubusercontent.com/filooww/auto-vpn/main/banner.svg)
+<img src="https://raw.githubusercontent.com/filooww/auto-vpn/main/banner.svg" width="680"/>
 
 # 🔒 Auto VPN
 
