@@ -1,18 +1,18 @@
-<div align="center">
+# 🔒 Auto VPN
 
-<img src="https://raw.githubusercontent.com/filooww/auto-vpn/main/banner.svg" width="680"/>
+> Automatic corporate VPN connection for macOS — connects silently on every login, auto-reconnects if dropped.
 
 [![Release](https://img.shields.io/github/v/release/filooww/auto-vpn?color=4c7cf7&style=flat-square)](https://github.com/filooww/auto-vpn/releases/latest)
-[![Platform](https://img.shields.io/badge/platform-macOS%2011%2B-lightgrey?style=flat-square)](https://github.com/filooww/auto-vpn)
+[![Platform](https://img.shields.io/badge/platform-macOS%2011%2B%20%7C%20ARM%20%26%20Intel-lightgrey?style=flat-square)](https://github.com/filooww/auto-vpn)
 [![License](https://img.shields.io/badge/license-MIT-green?style=flat-square)](LICENSE)
 
-</div>
+---
+
+<img src="https://raw.githubusercontent.com/filooww/auto-vpn/main/banner.svg" width="100%"/>
 
 ---
 
 ## What it does
-
-Auto VPN sets up a silent background process that:
 
 - 🔐 **Generates TOTP codes automatically** from your QR authenticator secret
 - 🚀 **Connects on every login** via macOS LaunchAgent — no manual action needed
@@ -63,7 +63,7 @@ System Login
 
 | | |
 |--|--|
-| macOS | 11.0+ (Apple Silicon) |
+| macOS | 11.0+ (Apple Silicon & Intel) |
 | Homebrew | [brew.sh](https://brew.sh) — installed automatically if missing |
 | OpenVPN | Installed automatically |
 | oath-toolkit | Installed automatically |
@@ -122,9 +122,9 @@ echo "Removed"
 
 ## Security
 
-- Your TOTP secret is stored locally in `~/.vpn/gui_config.json`, readable only by your user account
-- The setup app requests admin privileges only to configure passwordless `sudo` for OpenVPN
-- No data is sent anywhere — everything runs locally
+- TOTP secret stored locally in `~/.vpn/gui_config.json`, readable only by your user
+- Admin privileges requested only to configure passwordless `sudo` for OpenVPN
+- No data sent anywhere — everything runs locally
 
 ---
 
